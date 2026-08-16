@@ -1,74 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from '../context/ThemeContext';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4080';
-
-type Author = { id: string; name: string };
-type Feed = { id: string; title: string; slug: string; description: string | null };
-type Item = {
-  id: string;
-  title: string;
-  summary: string | null;
-  link: string | null;
-  imageUrl: string | null;
-  category: string | null;
-  publishedAt: string;
-  author: Author | null;
-  feed?: { title: string; slug: string };
-};
+import { api, API_BASE } from '../../lib/api-client';
+import { useApi } from '../../lib/useApi';
 
 export default function FeedsPage() {
-  const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [items, setItems] = useState<Item[]>([]);
   const [selectedFeed, setSelectedFeed] = useState<string>('');
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState<string | null>(null);
   const { layout } = useTheme();
 
-  const loadFeeds = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/feeds`);
-      if (!res.ok) throw new Error(`Server returned ${res.status}`);
-      setFeeds(await res.json());
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Could not reach the RSS server');
-    }
-  };
+  const feedsState = useApi(() => api.getFeeds(), []);
+  const itemsState = useApi(() => api.getItems(selectedFeed || undefined), [selectedFeed]);
 
-  const loadItems = async (feedId: string) => {
-    setLoading(true);
-    setErr(null);
-    try {
-      const url = feedId
-        ? `${API_URL}/api/items?feedId=${feedId}`
-        : `${API_URL}/api/items`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Server returned ${res.status}`);
-      setItems(await res.json());
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Could not reach the RSS server');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const feeds = feedsState.data ?? [];
+  const items = itemsState.data ?? [];
+  const { loading, error, status } = itemsState;
 
-  useEffect(() => {
-    loadFeeds();
-    loadItems('');
-  }, []);
-
-  useEffect(() => {
-    loadItems(selectedFeed);
-  }, [selectedFeed]);
+  const errorMessage =
+    status === 0
+      ? 'The RSS Server is unreachable. Check the API container is running.'
+      : status === 404
+      ? 'That feed no longer exists.'
+      : error;
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold mb-2">RSS Client</h2>
       <p className="mb-6 text-slate-600 dark:text-slate-300">
-        Live content fetched from the RSS Server at <code>{API_URL}</code>.
+        Live content fetched from the RSS Server at <code>{API_BASE}</code>.
       </p>
 
       <div className="mb-6">
@@ -90,19 +50,27 @@ export default function FeedsPage() {
         </select>
       </div>
 
-      {err && (
+      {errorMessage && (
         <div
           role="alert"
           className="mb-6 rounded border border-red-400 bg-red-50 dark:bg-red-900/30 p-4 text-red-800 dark:text-red-200"
         >
-          <strong>Could not load feed:</strong> {err}
+          <strong>Could not load feed:</strong> {errorMessage}
+          <button
+            onClick={() => itemsState.refresh()}
+            className="ml-3 underline font-medium"
+          >
+            Retry
+          </button>
         </div>
       )}
 
       {loading && <p className="text-slate-500">Loading items…</p>}
 
-      {!loading && !err && items.length === 0 && (
-        <p className="text-slate-500">No items published yet.</p>
+      {!loading && !errorMessage && items.length === 0 && (
+        <p role="status" className="text-slate-500">
+          No items published yet.
+        </p>
       )}
 
       <div className={layout === 'list' ? 'flex flex-col gap-4' : 'grid gap-4 md:grid-cols-2'}>
@@ -127,7 +95,7 @@ export default function FeedsPage() {
             {item.summary && (
               <p className="text-slate-700 dark:text-slate-300">{item.summary}</p>
             )}
-           <Link
+            <Link
               href={`/feeds/${item.id}`}
               className="inline-block mt-3 text-blue-600 dark:text-blue-400 underline"
             >
