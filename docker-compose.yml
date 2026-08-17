@@ -8,7 +8,7 @@ services:
       - api
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://ec2-44-203-183-202.compute-1.amazonaws.com:4080
+      - NEXT_PUBLIC_API_URL=http://ec2-54-89-210-135.compute-1.amazonaws.com:4080
     volumes:
       - ./frontend:/app
       - /app/node_modules

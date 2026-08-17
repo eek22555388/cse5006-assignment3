@@ -1,3 +1,4 @@
-cd ~/cse5006-assignment2
-printf "node_modules\n.next\nnpm-debug.log\n.env.local\n" > api/.dockerignore
-printf "node_modules\n.next\nnpm-debug.log\n.env.local\n" > frontend/.dockerignore
+node_modules
+.next
+npm-debug.log
+.git

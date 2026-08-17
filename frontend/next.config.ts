@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: [
-    'ec2-44-203-183-202.compute-1.amazonaws.com',
-    '44.203.183.202',
+    'ec2-54-89-210-135.compute-1.amazonaws.com',
+    
     'localhost',
     '127.0.0.1',
   ],
