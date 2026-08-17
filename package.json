@@ -1,0 +1,25 @@
+{
+  "name": "cse5006-assignment3",
+  "version": "1.0.0",
+  "description": "A backend-driven RSS system extending the Assessment 1 frontend. Feed content is stored in PostgreSQL, served through a REST API, and consumed by an RSS Client interface. The whole stack runs in Docker.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eek22555388/cse5006-assignment3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eek22555388/cse5006-assignment3/issues"
+  },
+  "homepage": "https://github.com/eek22555388/cse5006-assignment3#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0"
+  }
+}
