@@ -54,4 +54,9 @@ export const api = {
   getAuthors: () => request<Author[]>('/api/authors'),
   createAuthor: (data: NewAuthor) => request<Author>('/api/authors', jsonPost(data)),
   deleteAuthor: (id: string) => request<null>(`/api/authors?id=${id}`, { method: 'DELETE' }),
+  setAuthorActive: (id: string, isActive: boolean) =>
+    request<Author>(`/api/authors?id=${id}`, {
+      ...jsonPost({ isActive }),
+      method: 'PATCH',
+    }),
 };
