@@ -35,7 +35,7 @@ export default function AuthorSection({ authors, mutate }: { authors: Author[]; 
             <span>
               {a.name} <span className="text-slate-500">({a._count?.items ?? 0} items)</span>
               {!a.isActive && (
-                <span className="ml-2 text-amber-600 dark:text-amber-400">inactive</span>
+                <span className="ml-2 text-amber-700 dark:text-amber-400">inactive</span>
               )}
             </span>
             <span className="space-x-3">

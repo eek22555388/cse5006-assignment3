@@ -19,10 +19,12 @@ export default function StatCard({
   };
 
   return (
-    <div className={`rounded-lg border-l-4 border ${tones[tone]} p-4 bg-white dark:bg-slate-800`}>
+    <div
+      className={`rounded-lg border-l-4 border ${tones[tone]} p-4 bg-white dark:bg-slate-800`}
+    >
       <dt className="text-sm text-slate-500 dark:text-slate-400">{label}</dt>
-      <dd className="text-2xl font-bold mt-1">{value}</dd>
-      {hint && <p className="text-xs text-slate-500 mt-1">{hint}</p>}
+      <dd className="text-2xl font-bold mt-1 ml-0">{value}</dd>
+      {hint && <dd className="text-xs text-slate-500 mt-1 ml-0">{hint}</dd>}
     </div>
   );
 }

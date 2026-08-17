@@ -6,4 +6,4 @@ export const btn =
 export const card = 'rounded-lg border border-slate-200 dark:border-slate-600 p-5 mb-8';
 export const row = 'flex justify-between items-center text-sm border-t pt-2 dark:border-slate-600';
 export const linkDanger = 'text-red-600 dark:text-red-400 hover:underline';
-export const linkWarn = 'text-amber-600 dark:text-amber-400 hover:underline';
+export const linkWarn = 'text-amber-700 dark:text-amber-400 hover:underline';
