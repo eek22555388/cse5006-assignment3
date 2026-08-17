@@ -1,4 +1,4 @@
-import type { Author, Feed, FeedItem, NewAuthor, NewFeed, NewFeedItem } from './types';
+import type { Author, Feed, FeedItem, NewAuthor, NewFeed, NewFeedItem,Metrics, Health } from './types';
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4080';
 
@@ -59,4 +59,8 @@ export const api = {
       ...jsonPost({ isActive }),
       method: 'PATCH',
     }),
+
+  // Observability
+  getMetrics: () => request<Metrics>('/api/metrics'),
+  getHealth: () => request<Health>('/health'),
 };

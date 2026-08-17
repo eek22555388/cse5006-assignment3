@@ -4,4 +4,5 @@ export const navLinks = [
   { href: "/about", label: "About" },
   { href: "/settings", label: "Settings" },
   { href: "/manage", label: "Manage" },
+  { href: '/dashboard', label: 'Dashboard' },
 ];

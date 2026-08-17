@@ -47,3 +47,48 @@ export type NewAuthor = Pick<Author, 'name'> & Partial<Pick<Author, 'email'>>;
 
 export type NewFeedItem = Pick<FeedItem, 'feedId' | 'title'> &
   Partial<Pick<FeedItem, 'summary' | 'content' | 'link' | 'imageUrl' | 'category' | 'authorId'>>;
+
+export type FeedStatus = 'healthy' | 'stale' | 'empty';
+
+export type FeedSummary = {
+  id: string;
+  title: string;
+  slug: string;
+  totalItems: number;
+  activeItems: number;
+  latestPublishedAt: string | null;
+  requests: number;
+  status: FeedStatus;
+};
+
+export type Metrics = {
+  requests: {
+    total: number;
+    lastHour: number;
+    lastDay: number;
+    errors: number;
+    errorRate: number;
+    byStatus: { status: number | null; count: number }[];
+    byPath: { path: string; count: number }[];
+    byClient: { clientIp: string | null; count: number }[];
+  };
+  clients: { unique: number };
+  content: {
+    feeds: number;
+    activeItems: number;
+    inactiveItems: number;
+    totalItems: number;
+    authors: number;
+  };
+  feedSummaries: FeedSummary[];
+  thresholds: { staleAfterDays: number };
+  generatedAt: string;
+};
+
+export type Health = {
+  status: 'ok' | 'degraded';
+  database: 'connected' | 'unreachable';
+  latencyMs?: number;
+  uptimeSeconds?: number;
+  timestamp: string;
+};
