@@ -1,55 +1,39 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4080';
-
-type Item = {
-  id: string;
-  title: string;
-  summary: string | null;
-  content: string | null;
-  link: string | null;
-  imageUrl: string | null;
-  category: string | null;
-  publishedAt: string;
-  author: { name: string } | null;
-  feed?: { title: string; slug: string };
-};
+import { api } from '../../../lib/api-client';
+import { useApi } from '../../../lib/useApi';
 
 export default function ItemPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const [item, setItem] = useState<Item | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+const { data: item, loading, error, status, refresh } = useApi(
+    () => (id ? api.getItem(id) : Promise.resolve(null)),
+    [id]
+  );
 
-  useEffect(() => {
-    if (!id) return;
-    (async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/items?id=${id}`);
-        if (res.status === 404) throw new Error('That item could not be found.');
-        if (!res.ok) throw new Error(`Server returned ${res.status}`);
-        setItem(await res.json());
-      } catch (e) {
-        setErr(e instanceof Error ? e.message : 'Could not reach the RSS server');
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [id]);
+  const errorMessage =
+    status === 404
+      ? 'That item could not be found. It may have been withdrawn.'
+      : status === 0
+      ? 'The RSS Server is unreachable.'
+      : error;
 
   if (loading) return <p className="p-8 text-slate-500">Loading…</p>;
 
-  if (err) {
+  if (errorMessage) {
     return (
       <div className="p-8 max-w-3xl mx-auto">
-        <div role="alert" className="rounded border border-red-400 bg-red-50 dark:bg-red-900/30 p-4 text-red-800 dark:text-red-200">
-          {err}
+        <div
+          role="alert"
+          className="rounded border border-red-400 bg-red-50 dark:bg-red-900/30 p-4 text-red-800 dark:text-red-200"
+        >
+          {errorMessage}
+          <button onClick={() => refresh()} className="ml-3 underline font-medium">
+            Retry
+          </button>
         </div>
         <Link href="/feeds" className="inline-block mt-4 text-blue-600 dark:text-blue-400 underline">
           Back to all items
