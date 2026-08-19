@@ -12,11 +12,12 @@ export default function About() {
 
       <section className="mb-8">
         <h3 className="text-xl font-semibold mb-2">What this is</h3>
-        <p className="mb-3 text-slate-700 dark:text-slate-300">
-          This is an RSS Server and RSS Client built to feed content into a
-          Learning Management System (LMS). Feed items are created, stored and
-          published from one place, then presented to learners in a clear,
-          easy-to-scan interface.
+        <p className="text-slate-700 dark:text-slate-300">
+          Assessment 1 built the frontend. Assessment 2 added the backend — a
+          PostgreSQL database, a REST API, an RSS 2.0 feed endpoint and Docker
+          deployment. <strong>Assessment 3 makes it observable:</strong> an
+          operations dashboard, database-backed metrics, alerting on unhealthy
+          feeds, and automated end-to-end, load and accessibility testing.
         </p>
         <p className="text-slate-700 dark:text-slate-300">
           Assessment 1 built the frontend. <strong>Assessment 2 adds the backend:</strong>{' '}
@@ -41,27 +42,33 @@ export default function About() {
         </p>
       </section>
 
-      <section className="mb-8">
-        <h3 className="text-xl font-semibold mb-2">Where it&apos;s heading</h3>
+            <section className="mb-8">
+        <h3 className="text-xl font-semibold mb-2">Monitoring and testing</h3>
+        <p className="mb-3 text-slate-700 dark:text-slate-300">
+          Every API request is written to the database, so the dashboard reports
+          real measured activity rather than in-memory counters that reset when a
+          container restarts. Feed health is derived from item history at query
+          time, which means it cannot drift out of step with the content.
+        </p>
         <p className="text-slate-700 dark:text-slate-300">
-          Assessment 3 will add dashboard views and reporting on top of the
-          metrics the server already collects, along with end-to-end and load
-          testing.
+          The project is covered by six Playwright end-to-end tests across the
+          server and client use cases, JMeter load testing at five traffic levels,
+          and Lighthouse accessibility audits scoring 100 on every main page.
         </p>
       </section>
-
+      
       <section className="mb-8">
         <h3 className="text-xl font-semibold mb-2">Walkthrough</h3>
-        <p className="mb-4 text-slate-700 dark:text-slate-300">
-          The video below walks through the system: the database schema, the API
-          endpoints, the RSS Server sending feeds to the RSS Client, and the
-          application running in Docker.
+         <p className="mb-4 text-slate-700 dark:text-slate-300">
+          The Assessment 3 walkthrough covers the operations dashboard, the
+          metrics and health endpoints, database seeding, the Playwright and
+          JMeter test results, and the Lighthouse accessibility audits.
         </p>
-
-        <video controls preload="metadata" className="w-full rounded-lg">
-          <source src="/22555388_Assignment2_Walkthrough.mp4" type="video/mp4" />
+        <video controls preload="metadata" className="w-full rounded-lg mb-6">
+          <source src="/22555388_Assignment3_Recording.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+
       </section>
     </div>
   );
